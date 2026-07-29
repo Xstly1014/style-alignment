@@ -1,0 +1,417 @@
+---
+name: style-alignment
+description: "Aligns frontend pages to a unified pixel-level design spec extracted from reference pages or design docs, with boundary enforcement and feedback-driven methodology evolution. Invoke when user needs to unify UI consistency across existing project pages or mentions aligning/standardizing frontend styles."
+---
+
+# Style Alignment
+
+## Core Philosophy
+
+**This skill's power is NOT in what it does — it's in what it forbids.**
+
+A spec that says "use 14px font" is weak. A spec that says "body text MUST be 14px, NEVER 13px or 15px, NEVER use rem units that resolve outside 13.5px-14.5px, NEVER mix font sizes within the same text block" is strong. Boundaries create consistency. Freedom within those boundaries creates flexibility.
+
+The methodology document is a living artifact. It starts as a set of rules, grows into a contract, and matures into an enforceable standard. Every page aligned, every user review, every correction feeds back into the document — making it sharper, faster, and more authoritative with each iteration.
+
+---
+
+## Workflow Overview
+
+```
+Phase 0: Load existing methodology (if any)
+Phase 1: Determine input type (reference pages vs. design doc)
+Phase 2: Extract spec from pages OR load design doc
+Phase 3: Create/update methodology document → User review
+Phase 4: Align pages one by one → User review after each
+Phase 5: Feedback loop — update methodology after every review
+```
+
+---
+
+## Phase 0: Methodology Document Check
+
+**Before doing anything else**, check if a methodology document already exists.
+
+1. Search for `design-spec.md` or `design-methodology.md` in:
+   - `<project-root>/docs/`
+   - `<project-root>/`
+   - Any path the user specifies
+2. If found: **READ IT FULLY**. Treat it as the current source of truth. Skip to Phase 1 but carry this document as context.
+3. If not found: Proceed to Phase 1 with a clean slate.
+
+**Critical:** Never ignore an existing methodology document. Never start from scratch if one exists. The document represents accumulated knowledge — discarding it resets the flywheel.
+
+---
+
+## Phase 1: Input Detection
+
+Ask the user what to use as the design template. If the user has already specified, skip this phase.
+
+### What to Ask
+
+> "I need a design reference to align your pages. Which would you like to provide?
+>
+> **A) Reference Pages** — One or more existing pages that represent the 'correct' design. I'll analyze them and extract a pixel-level spec.
+>
+> **B) Design Document** — A markdown/doc file that already describes your design standards. I'll use it directly.
+>
+> Please specify the file paths or page routes."
+
+### Rules
+
+- **NEVER proceed without input.** If the user hasn't specified, you MUST ask.
+- **NEVER assume** what the reference is. Always confirm.
+- If the user provides both, prioritize the design document (Phase 2B) but use reference pages to fill gaps.
+
+---
+
+## Phase 2A: Extract Design Spec from Reference Pages
+
+When the user provides reference page(s), analyze them to extract a pixel-level unified design specification.
+
+### How to Analyze
+
+1. Read the page's source code: templates (Vue/React/HTML), styles (CSS/SCSS/Less/Tailwind), and component logic.
+2. Read component files referenced by the page.
+3. Read shared style files (variables, mixins, theme configs).
+4. Read layout components (header, sidebar, footer wrappers).
+5. Cross-reference actual rendered values — don't trust comments, trust the code.
+
+### What to Extract — 12 Dimensions
+
+For each dimension, extract **exact values** (hex colors, px/rem sizes, border-radius, shadow definitions, transition timings). Approximations are unacceptable.
+
+#### 1. Page Frame
+- Background color (exact hex)
+- Page max-width / min-width / width
+- Header: height, background, border-bottom, content max-width, logo placement
+- Footer: height, background, content, visibility rules
+- Sidebar: width, collapse width, background, border
+- Content area: padding, max-width, margin
+- Scrollbar style (if customized)
+
+#### 2. Typography System
+- Font family stack (primary, fallback, monospace for code)
+- Font sizes: h1-h6, body, small, caption, label — exact px/rem
+- Font weights: which weights are used where
+- Line heights per text level
+- Letter spacing per text level
+- Text colors: primary, secondary, tertiary, disabled, inverse, link
+- Text alignment defaults
+
+#### 3. Color System
+- Primary color + all variants (hover, active, disabled, light, dark)
+- Background colors: page, card, table, modal, input, hover
+- Border colors: default, hover, focus, error
+- Status colors: success, warning, error, info — exact hex + when to use
+- Text colors: primary, secondary, placeholder, disabled
+- Shadow colors and opacity levels
+- Forbidden colors: explicitly list colors that must NEVER appear
+
+#### 4. Button System
+- Heights: large, default, small — exact px
+- Padding: horizontal and vertical per size
+- Border-radius
+- Font size and weight per button size
+- Color variants: primary, secondary, danger, ghost, link, text
+- Per variant: background, text color, border, hover state, active state, disabled state, loading state
+- Icon + text spacing
+- Button group spacing
+- **Placement rules**: where primary actions go, where danger actions go, max buttons per row
+
+#### 5. Form & Input System
+- Input height, padding, border, border-radius
+- Placeholder color
+- Focus state: border color, shadow, transition
+- Error state: border color, error message style, position
+- Label: font-size, color, margin-bottom, required asterisk style
+- Form item spacing (margin-bottom)
+- Form layout: label position (left/top), label width
+- Select/DatePicker/Switch: height, style alignment with input
+- Validation feedback: timing, position, color, icon
+
+#### 6. Table System
+- Header: height, background, font-size, font-weight, text color, text-align
+- Row: height, hover background, selected background, striped background (if any)
+- Cell: padding, font-size, text color, text-align defaults
+- Border: which borders exist (header-bottom, row-bottom, vertical), color, width
+- Empty state: text, icon, padding
+- Pagination: position (bottom-right default), component style, page size selector
+- Action column: button type, spacing, confirmation behavior
+- Sort indicator style
+- Selection (checkbox) column style
+
+#### 7. Card & Container System
+- Card border-radius
+- Card shadow (resting, hover)
+- Card border
+- Card padding (header, body, footer)
+- Card header: height, background, title font-size, title color, extra content position
+- Card body: padding, background
+- Card footer: padding, border-top, button placement
+- Modal/Drawer: width, padding, header/footer style, overlay opacity, close button style
+
+#### 8. Navigation System
+- Top nav: height, background, logo size, menu item style (font, padding, active state)
+- Sidebar: width, item height, item padding, active indicator (left border? background?), icon size, collapsed state
+- Breadcrumbs: separator character, font-size, color, last item style, link vs non-link
+- Tabs: height, active indicator (underline? background?), font-size, close button, tab spacing
+- Page jump behavior: which nav items jump to new pages vs. open in modal vs. open in new tab
+- **Navigation forbidden patterns**: e.g., never open internal pages in new tab, never use breadcrumbs without parent context
+
+#### 9. Spacing & Layout Rules
+- Section spacing: margin between major page sections
+- Component spacing: gap between sibling components
+- Form item spacing
+- Table action button spacing
+- Card internal spacing
+- Page edge padding
+- Grid system: column count, gutter width, responsive breakpoints
+- **Spacing scale**: define allowed spacing values (e.g., 4px, 8px, 12px, 16px, 24px, 32px — no other values)
+
+#### 10. Icon System
+- Icon library (e.g., Element Plus Icons, Ant Design Icons, Lucide)
+- Icon sizes per usage context (nav: 20px, button: 16px, table action: 14px, etc.)
+- Icon colors per context
+- Icon + text spacing
+- **Forbidden**: mixing icon libraries, using PNG/SVG sprites alongside icon fonts, inconsistent icon stroke widths
+
+#### 11. Interaction & Feedback
+- Hover transitions: duration, easing
+- Active/press feedback
+- Loading: spinner style, skeleton style, overlay style
+- Toast/Notification: position, duration, style per type (success/warning/error/info)
+- Confirmation dialogs: trigger conditions, style, button order
+- Disabled state: opacity, cursor, color
+- Empty state: layout, illustration, text, action button
+- Error state: layout, illustration, text, retry action
+
+#### 12. Sub-interface System
+- Drawer: width, placement, mask, close behavior, body padding
+- Modal: width per usage (small/medium/large), mask opacity, close on mask click, body padding
+- Sub-page navigation: when to use drawer vs modal vs new page
+- Form layout in sub-interfaces: single column vs two column, label position
+- Close/Cancel/Confirm: button placement (footer right-aligned), button variants, confirmation behavior for unsaved changes
+
+### Boundary Definition — The "Must NOT" Rules
+
+For EVERY dimension above, you MUST define what is forbidden. This is the core of the skill.
+
+**Template per dimension:**
+
+```
+### [Dimension Name]
+
+#### Must Follow
+- [Exact rule with exact values]
+
+#### Must NOT
+- [Explicitly forbidden patterns]
+- [Common mistakes to avoid]
+- [Edge cases that are NOT allowed]
+
+#### Freedom Zone
+- [Where this page can deviate and why]
+- [What constitutes a valid business-specific exception]
+```
+
+**Examples of strong boundary rules:**
+
+- "Body text MUST be 14px. NEVER use 13px or 15px for body text. NEVER use rem units that resolve to anything other than 14px for body text."
+- "Primary buttons MUST use #A78BFA background. NEVER use gradients on buttons. NEVER use box-shadow on primary buttons except for the defined hover state."
+- "Table row height MUST be 48px. NEVER use auto height. NEVER let text wrap in table cells — use ellipsis with tooltip instead."
+- "NEVER mix Element Plus icons with custom SVG icons in the same navigation area."
+- "Form labels MUST be left-aligned with 100px width. NEVER use top-aligned labels except in sub-interface drawers where width < 500px."
+
+### Freedom Zone Principles
+
+Not every page is identical. Business logic creates legitimate deviations. Define where freedom exists:
+
+1. **Layout freedom**: Pages with unique data visualization (charts, dashboards) may use custom grid layouts, but must still follow color/typography/spacing rules.
+2. **Component freedom**: Pages may introduce new components, but they must inherit the design token system (colors, spacing, typography).
+3. **Density freedom**: Data-heavy pages may use compact table variants, but must not violate the spacing scale.
+4. **Navigation freedom**: Some pages may hide breadcrumbs (e.g., full-screen editors), but must provide an alternative navigation path.
+
+**Rule of thumb:** Freedom in layout and component composition. No freedom in design tokens (color, font, spacing, shadow).
+
+---
+
+## Phase 2B: Use Design Document Directly
+
+If the user provides a design document:
+
+1. **READ IT FULLY** — every section, every rule.
+2. Validate it has the necessary structure. If gaps exist, note them and inform the user.
+3. If an existing methodology document from Phase 0 also exists, merge: use the design document as the base, fill gaps with the methodology document's accumulated learnings.
+4. Save the merged/final document as the methodology document.
+5. Skip to Phase 4 (alignment).
+
+---
+
+## Phase 3: Methodology Document Creation & Review
+
+### Document Creation
+
+1. Compile all extracted dimensions into a structured markdown document.
+2. Save to `<project-root>/docs/design-spec.md` (or user-specified path).
+3. Structure:
+
+```markdown
+# Frontend Design Specification
+
+> Version: [date]
+> Status: [Draft / Reviewed / Active]
+> Source: [reference pages / design doc / merged]
+
+## Design Tokens
+### Colors
+### Typography
+### Spacing Scale
+### Shadows
+### Border Radius
+### Transitions
+
+## Component Standards
+### Buttons
+### Forms & Inputs
+### Tables
+### Cards
+### Modals & Drawers
+### Navigation
+### Breadcrumbs
+### Tabs
+### Tags & Badges
+
+## Layout Standards
+### Page Frame
+### Grid System
+### Section Spacing
+### Responsive Breakpoints
+
+## Interaction Standards
+### States (hover/active/disabled/loading)
+### Feedback (toast/notification/confirmation)
+### Empty & Error States
+
+## Sub-interface Standards
+### Drawer
+### Modal
+### Sub-page Navigation Logic
+
+## Forbidden Patterns
+### [Aggregated list of all "Must NOT" rules]
+
+## Freedom Zones
+### [Where deviation is allowed and why]
+
+## Revision History
+| Date | Change | Reason |
+|------|--------|--------|
+```
+
+### User Review
+
+1. Present the document to the user: "I've compiled the design specification. Please review it. You can ask me to adjust any section, add rules, remove rules, or change boundaries."
+2. **Wait for user confirmation.** Do NOT proceed to alignment without explicit approval.
+3. Apply all user adjustments.
+4. Update the document version and status to "Active".
+
+---
+
+## Phase 4: Page-by-Page Alignment
+
+### Alignment Process Per Page
+
+For each page that needs alignment:
+
+#### Step 1: Read & Compare
+1. Read the page's current code.
+2. Read the methodology document.
+3. Create a mental (or written) diff: what doesn't match?
+
+#### Step 2: Self-Audit Checklist
+Go through every element and ask yourself — **pixel by pixel**:
+
+- [ ] Page background color matches spec?
+- [ ] Header height, background, border matches spec?
+- [ ] Footer matches spec (or correctly hidden)?
+- [ ] All font sizes match the typography system?
+- [ ] All text colors match the color system?
+- [ ] All buttons match the button system (size, color, variant, placement)?
+- [ ] All inputs match the form system (height, border, focus state)?
+- [ ] All tables match the table system (header, row, cell, pagination)?
+- [ ] All cards match the card system (radius, shadow, padding)?
+- [ ] All spacing values are from the allowed spacing scale?
+- [ ] All icons are from the correct library and correct size?
+- [ ] All navigation items match the navigation system?
+- [ ] Breadcrumbs are correct (separator, style, last item)?
+- [ ] All hover/active/disabled states match interaction spec?
+- [ ] All sub-interfaces (modal/drawer) match sub-interface spec?
+- [ ] No forbidden patterns present?
+- [ ] Any deviation falls within a defined Freedom Zone?
+
+#### Step 3: Apply Changes
+1. Make all necessary changes to align the page.
+2. Do NOT introduce new patterns — only align to existing spec.
+3. If you encounter a pattern not covered by the spec, STOP and note it. Do not improvise. Ask the user or add it to the spec first.
+
+#### Step 4: Present for Review
+1. Present the aligned page to the user.
+2. List what was changed.
+3. Ask: "Please review this page. Is everything aligned correctly?"
+
+### Rules
+
+- **One page at a time.** NEVER batch-align multiple pages without review.
+- **NEVER skip the self-audit.** Every element must be checked.
+- **NEVER improvise.** If the spec doesn't cover a case, expand the spec first.
+- **NEVER partially align.** A page is either fully aligned or not — no "mostly aligned."
+
+---
+
+## Phase 5: Feedback Loop — Data Flywheel
+
+After each page review, the methodology document MUST be updated based on user feedback.
+
+### When User Reports Issues
+
+1. **Fix the page** according to the user's feedback.
+2. **Update the methodology document:**
+   - If the issue reveals a missing rule → ADD it with exact values and boundaries.
+   - If the issue reveals a vague rule → SHARPEN it with precise values.
+   - If the issue reveals a wrong rule → CORRECT it and note the change in revision history.
+   - If the issue reveals an unnecessary rule → REMOVE it to reduce noise.
+3. **Clean up:**
+   - Remove contradictory rules.
+   - Merge duplicate rules.
+   - Simplify overly complex rules.
+4. **Notify the user** that the methodology document has been updated and explain what changed.
+
+### Flywheel Principles
+
+- **Every correction makes the next page faster.** If a rule was unclear and caused an error, the sharpened rule prevents that error on all future pages.
+- **The document should shrink in ambiguity and grow in precision.** Not necessarily longer — more accurate.
+- **Rules that are never violated and never referenced are candidates for removal.** Keep the document lean.
+- **The document is the single source of truth.** If code and document disagree, the document wins (unless the user says otherwise).
+
+### Revision History
+
+Every update to the methodology document MUST include:
+- Date
+- What changed (added / modified / removed)
+- Why (which page review triggered it)
+
+---
+
+## Critical Rules Summary
+
+1. **Never start without checking for an existing methodology document.**
+2. **Never proceed without user-specified reference pages or design docs.**
+3. **Never be vague — exact px, exact hex, exact rem, exact transition timing.**
+4. **Never skip boundary definition — "Must NOT" rules are the core.**
+5. **Never align without user review — one page at a time.**
+6. **Never ignore feedback — every correction feeds back into the document.**
+7. **Never improvise — if the spec doesn't cover it, expand the spec first.**
+8. **Never discard accumulated knowledge — the document only gets stronger.**
+9. **Never partially align — a page is either fully aligned or not.**
+10. **The skill's strength is in its boundaries, not its instructions.**

@@ -1,16 +1,26 @@
 {
   "name": "style-alignment",
-  "version": "1.0.0",
-  "description": "A TRAE skill for pixel-level frontend design alignment with boundary enforcement and feedback-driven methodology evolution.",
+  "version": "2.0.0",
+  "description": "A multi-platform AI agent skill for pixel-level frontend design alignment with boundary enforcement and feedback-driven methodology evolution. Supports Claude Code, Codex, Cursor, TRAE, and AGENTS.md.",
   "main": "SKILL.md",
+  "bin": {
+    "style-alignment": "./install.sh"
+  },
   "files": [
     "SKILL.md",
     "README.md",
     "LICENSE",
-    "template/"
+    "template/",
+    "adapters/",
+    "install.sh",
+    "install.ps1"
   ],
   "keywords": [
     "trae",
+    "claude-code",
+    "codex",
+    "cursor",
+    "agents-md",
     "skill",
     "frontend",
     "design-system",
@@ -18,7 +28,8 @@
     "ui-consistency",
     "pixel-level",
     "design-spec",
-    "style-guide"
+    "style-guide",
+    "agent-skills"
   ],
   "author": "Xstly1014 <1125448766@qq.com>",
   "license": "MIT",
