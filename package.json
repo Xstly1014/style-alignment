@@ -1,0 +1,33 @@
+{
+  "name": "style-alignment",
+  "version": "1.0.0",
+  "description": "A TRAE skill for pixel-level frontend design alignment with boundary enforcement and feedback-driven methodology evolution.",
+  "main": "SKILL.md",
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    "template/"
+  ],
+  "keywords": [
+    "trae",
+    "skill",
+    "frontend",
+    "design-system",
+    "design-alignment",
+    "ui-consistency",
+    "pixel-level",
+    "design-spec",
+    "style-guide"
+  ],
+  "author": "Xstly1014 <1125448766@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xstly1014/style-alignment.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Xstly1014/style-alignment/issues"
+  },
+  "homepage": "https://github.com/Xstly1014/style-alignment#readme"
+}
