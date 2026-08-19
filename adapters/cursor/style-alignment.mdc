@@ -1,9 +1,8 @@
 ---
-description: "Pixel-level frontend design alignment with boundary enforcement and feedback-driven methodology evolution. Activates when aligning UI styles, standardizing frontend pages, or extracting design specs from reference pages."
+description: Aligns frontend pages to a unified pixel-level design spec extracted from reference pages or design docs, with boundary enforcement and a feedback-driven methodology that evolves per review. Invoke when the user wants to unify UI consistency across existing pages, standardize frontend styles, extract a design spec, or says things like 'align my frontend pages' / '对齐前端页面样式' / '统一一下样式'.
 globs: ["**/*.vue", "**/*.tsx", "**/*.jsx", "**/*.html", "**/*.css", "**/*.scss", "**/*.less", "**/*.tailwind"]
 alwaysApply: false
 ---
-
 # Style Alignment
 
 ## Core Philosophy
@@ -13,6 +12,19 @@ alwaysApply: false
 A spec that says "use 14px font" is weak. A spec that says "body text MUST be 14px, NEVER 13px or 15px, NEVER use rem units that resolve outside 13.5px-14.5px, NEVER mix font sizes within the same text block" is strong. Boundaries create consistency. Freedom within those boundaries creates flexibility.
 
 The methodology document is a living artifact. It starts as a set of rules, grows into a contract, and matures into an enforceable standard. Every page aligned, every user review, every correction feeds back into the document — making it sharper, faster, and more authoritative with each iteration.
+
+---
+
+## Activation Boundary — When NOT to Use
+
+This skill is deliberate and heavy (it builds a spec and reviews every page). Do NOT invoke it when:
+
+- The project is brand-new with **no existing pages and no design document** — there is nothing to align *to*; reach for a design-system skill instead.
+- The task is purely backend, non-visual, or a one-off tiny CSS tweak where a full spec + per-page review is disproportionate.
+- The user only wants a fresh visual mockup or a brand-new component, not to conform existing pages to a spec.
+- The user explicitly says "just do it" for a small change — you may offer the skill, but do not force the full flywheel.
+
+**Use it when:** unifying consistency across multiple existing pages, or establishing/evolving a durable, pixel-level design spec.
 
 ---
 
@@ -78,121 +90,11 @@ When the user provides reference page(s), analyze them to extract a pixel-level 
 4. Read layout components (header, sidebar, footer wrappers).
 5. Cross-reference actual rendered values — don't trust comments, trust the code.
 
-### What to Extract — 12 Dimensions
+### What to Extract
 
 For each dimension, extract **exact values** (hex colors, px/rem sizes, border-radius, shadow definitions, transition timings). Approximations are unacceptable.
 
-#### 1. Page Frame
-- Background color (exact hex)
-- Page max-width / min-width / width
-- Header: height, background, border-bottom, content max-width, logo placement
-- Footer: height, background, content, visibility rules
-- Sidebar: width, collapse width, background, border
-- Content area: padding, max-width, margin
-- Scrollbar style (if customized)
-
-#### 2. Typography System
-- Font family stack (primary, fallback, monospace for code)
-- Font sizes: h1-h6, body, small, caption, label — exact px/rem
-- Font weights: which weights are used where
-- Line heights per text level
-- Letter spacing per text level
-- Text colors: primary, secondary, tertiary, disabled, inverse, link
-- Text alignment defaults
-
-#### 3. Color System
-- Primary color + all variants (hover, active, disabled, light, dark)
-- Background colors: page, card, table, modal, input, hover
-- Border colors: default, hover, focus, error
-- Status colors: success, warning, error, info — exact hex + when to use
-- Text colors: primary, secondary, placeholder, disabled
-- Shadow colors and opacity levels
-- Forbidden colors: explicitly list colors that must NEVER appear
-
-#### 4. Button System
-- Heights: large, default, small — exact px
-- Padding: horizontal and vertical per size
-- Border-radius
-- Font size and weight per button size
-- Color variants: primary, secondary, danger, ghost, link, text
-- Per variant: background, text color, border, hover state, active state, disabled state, loading state
-- Icon + text spacing
-- Button group spacing
-- **Placement rules**: where primary actions go, where danger actions go, max buttons per row
-
-#### 5. Form & Input System
-- Input height, padding, border, border-radius
-- Placeholder color
-- Focus state: border color, shadow, transition
-- Error state: border color, error message style, position
-- Label: font-size, color, margin-bottom, required asterisk style
-- Form item spacing (margin-bottom)
-- Form layout: label position (left/top), label width
-- Select/DatePicker/Switch: height, style alignment with input
-- Validation feedback: timing, position, color, icon
-
-#### 6. Table System
-- Header: height, background, font-size, font-weight, text color, text-align
-- Row: height, hover background, selected background, striped background (if any)
-- Cell: padding, font-size, text color, text-align defaults
-- Border: which borders exist (header-bottom, row-bottom, vertical), color, width
-- Empty state: text, icon, padding
-- Pagination: position (bottom-right default), component style, page size selector
-- Action column: button type, spacing, confirmation behavior
-- Sort indicator style
-- Selection (checkbox) column style
-
-#### 7. Card & Container System
-- Card border-radius
-- Card shadow (resting, hover)
-- Card border
-- Card padding (header, body, footer)
-- Card header: height, background, title font-size, title color, extra content position
-- Card body: padding, background
-- Card footer: padding, border-top, button placement
-- Modal/Drawer: width, padding, header/footer style, overlay opacity, close button style
-
-#### 8. Navigation System
-- Top nav: height, background, logo size, menu item style (font, padding, active state)
-- Sidebar: width, item height, item padding, active indicator (left border? background?), icon size, collapsed state
-- Breadcrumbs: separator character, font-size, color, last item style, link vs non-link
-- Tabs: height, active indicator (underline? background?), font-size, close button, tab spacing
-- Page jump behavior: which nav items jump to new pages vs. open in modal vs. open in new tab
-- **Navigation forbidden patterns**: e.g., never open internal pages in new tab, never use breadcrumbs without parent context
-
-#### 9. Spacing & Layout Rules
-- Section spacing: margin between major page sections
-- Component spacing: gap between sibling components
-- Form item spacing
-- Table action button spacing
-- Card internal spacing
-- Page edge padding
-- Grid system: column count, gutter width, responsive breakpoints
-- **Spacing scale**: define allowed spacing values (e.g., 4px, 8px, 12px, 16px, 24px, 32px — no other values)
-
-#### 10. Icon System
-- Icon library (e.g., Element Plus Icons, Ant Design Icons, Lucide)
-- Icon sizes per usage context (nav: 20px, button: 16px, table action: 14px, etc.)
-- Icon colors per context
-- Icon + text spacing
-- **Forbidden**: mixing icon libraries, using PNG/SVG sprites alongside icon fonts, inconsistent icon stroke widths
-
-#### 11. Interaction & Feedback
-- Hover transitions: duration, easing
-- Active/press feedback
-- Loading: spinner style, skeleton style, overlay style
-- Toast/Notification: position, duration, style per type (success/warning/error/info)
-- Confirmation dialogs: trigger conditions, style, button order
-- Disabled state: opacity, cursor, color
-- Empty state: layout, illustration, text, action button
-- Error state: layout, illustration, text, retry action
-
-#### 12. Sub-interface System
-- Drawer: width, placement, mask, close behavior, body padding
-- Modal: width per usage (small/medium/large), mask opacity, close on mask click, body padding
-- Sub-page navigation: when to use drawer vs modal vs new page
-- Form layout in sub-interfaces: single column vs two column, label position
-- Close/Cancel/Confirm: button placement (footer right-aligned), button variants, confirmation behavior for unsaved changes
+📖 **Load `references/extract-spec.md`** — the full 12-dimension extraction checklist (page frame, typography, color, buttons, forms, tables, cards, navigation, spacing, icons, interaction, sub-interfaces). Work through every dimension and record exact values.
 
 ### Boundary Definition — The "Must NOT" Rules
 
@@ -255,60 +157,7 @@ If the user provides a design document:
 
 1. Compile all extracted dimensions into a structured markdown document.
 2. Save to `<project-root>/docs/design-spec.md` (or user-specified path).
-3. Structure:
-
-```markdown
-# Frontend Design Specification
-
-> Version: [date]
-> Status: [Draft / Reviewed / Active]
-> Source: [reference pages / design doc / merged]
-
-## Design Tokens
-### Colors
-### Typography
-### Spacing Scale
-### Shadows
-### Border Radius
-### Transitions
-
-## Component Standards
-### Buttons
-### Forms & Inputs
-### Tables
-### Cards
-### Modals & Drawers
-### Navigation
-### Breadcrumbs
-### Tabs
-### Tags & Badges
-
-## Layout Standards
-### Page Frame
-### Grid System
-### Section Spacing
-### Responsive Breakpoints
-
-## Interaction Standards
-### States (hover/active/disabled/loading)
-### Feedback (toast/notification/confirmation)
-### Empty & Error States
-
-## Sub-interface Standards
-### Drawer
-### Modal
-### Sub-page Navigation Logic
-
-## Forbidden Patterns
-### [Aggregated list of all "Must NOT" rules]
-
-## Freedom Zones
-### [Where deviation is allowed and why]
-
-## Revision History
-| Date | Change | Reason |
-|------|--------|--------|
-```
+3. 📖 **Use `template/design-spec-template.md`** as the document structure (Design Tokens → Component Standards → Layout Standards → Interaction Standards → Sub-interface Standards → Forbidden Patterns → Freedom Zones → Revision History). Do not reinvent the structure.
 
 ### User Review
 
@@ -331,25 +180,7 @@ For each page that needs alignment:
 3. Create a mental (or written) diff: what doesn't match?
 
 #### Step 2: Self-Audit Checklist
-Go through every element and ask yourself — **pixel by pixel**:
-
-- [ ] Page background color matches spec?
-- [ ] Header height, background, border matches spec?
-- [ ] Footer matches spec (or correctly hidden)?
-- [ ] All font sizes match the typography system?
-- [ ] All text colors match the color system?
-- [ ] All buttons match the button system (size, color, variant, placement)?
-- [ ] All inputs match the form system (height, border, focus state)?
-- [ ] All tables match the table system (header, row, cell, pagination)?
-- [ ] All cards match the card system (radius, shadow, padding)?
-- [ ] All spacing values are from the allowed spacing scale?
-- [ ] All icons are from the correct library and correct size?
-- [ ] All navigation items match the navigation system?
-- [ ] Breadcrumbs are correct (separator, style, last item)?
-- [ ] All hover/active/disabled states match interaction spec?
-- [ ] All sub-interfaces (modal/drawer) match sub-interface spec?
-- [ ] No forbidden patterns present?
-- [ ] Any deviation falls within a defined Freedom Zone?
+📖 **Load `references/align-checklist.md`** and go through **every** item, pixel by pixel, before you change anything. Do not skip items.
 
 #### Step 3: Apply Changes
 1. Make all necessary changes to align the page.
@@ -416,3 +247,11 @@ Every update to the methodology document MUST include:
 8. **Never discard accumulated knowledge — the document only gets stronger.**
 9. **Never partially align — a page is either fully aligned or not.**
 10. **The skill's strength is in its boundaries, not its instructions.**
+
+---
+
+## References (load on demand)
+
+- `references/extract-spec.md` — 12-dimension pixel-level extraction checklist. **Load at Phase 2A.**
+- `references/align-checklist.md` — per-page pixel-by-pixel self-audit checklist. **Load at Phase 4, Step 2.**
+- `template/design-spec-template.md` — methodology document structure. **Use at Phase 3.**

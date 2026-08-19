@@ -6,12 +6,19 @@
   "bin": {
     "style-alignment": "./install.sh"
   },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepare": "node scripts/build.mjs"
+  },
   "files": [
     "SKILL.md",
     "README.md",
     "LICENSE",
+    "src/",
+    "references/",
     "template/",
     "adapters/",
+    "scripts/",
     "install.sh",
     "install.ps1"
   ],
